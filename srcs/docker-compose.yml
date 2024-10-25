@@ -9,7 +9,7 @@ services:
       networks: inception
       restart: always
       env_file: ./secrets/variables.env
-      volume: worpdress_volume:/var/ww/html
+      volume: worpdress_volume:/var/www/html
     
     mariadb:
       build: requirements/mariadb
@@ -28,7 +28,7 @@ services:
       networks: inception
       restart: always
       env_file: ./secrets/variables.env
-      volume: worpdress_volume:/var/ww/html
+      volume: worpdress_volume:/var/www/html
 
 volumes:
   wordpress_volume: /home/dmanuel-/data/wordpress

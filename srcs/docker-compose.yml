@@ -1,38 +1,46 @@
-version: '3.8'
+
 
 services:
     nginx:
       build: requirements/nginx
       container_name: nginx
-      ports: "443:443"
-      depends_on: wordpress
-      networks: inception
+      ports: 
+        - "443:443"
+      depends_on: 
+        - wordpress
+      networks: 
+        - inception
       restart: always
-      env_file: ./secrets/variables.env
-      volume: worpdress_volume:/var/www/html
+      env_file: ../secrets/variables.env
+      volumes: 
+        - /home/dmanuel-/data/wordpress:/var/www/html
     
     mariadb:
       build: requirements/mariadb
-      container_name: nginx
-      expose: 3306
-      networks: inception
+      container_name: mariadb
+      expose: 
+        - 3306
+      networks: 
+        - inception
       restart: always
-      env_file: ./secrets/variables.env
-      volume: mariadb_volume:/var/lib/mysql
+      env_file: ../secrets/variables.env
+      volumes: 
+        - /home/dmanuel-/data/mariadb:/var/lib/mysql
     
     wordpress:
       build: requirements/wordpress
       container_name: wordpress
-      expose: 9000
-      depends_on: mariadb
-      networks: inception
+      expose: 
+        - 9000
+      depends_on: 
+        - mariadb
+      networks: 
+        - inception
       restart: always
-      env_file: ./secrets/variables.env
-      volume: worpdress_volume:/var/www/html
+      env_file: ../secrets/variables.env
+      volumes: 
+        - /home/dmanuel-/data/wordpress:/var/www/html
 
-volumes:
-  wordpress_volume: /home/dmanuel-/data/wordpress
-  mariadb_volume: /home/dmanuel-/data/mariadb
 
 networks:
   inception:

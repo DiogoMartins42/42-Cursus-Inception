@@ -4,8 +4,12 @@ NAME=inception
 all: build up
 
 build:
-	docker-compose -f $(COMPOSE_SRCS) -p $(NAME) build
+	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) build
 up: 
-	docker-compose -f $(COMPOSE_SRSC) -p $(NAME) up -d
+	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) up -d
 down: 
-	docker-compose -f $(COMPOSE_SRSC) -p $(NAME) down
+	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) down
+stop:
+	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) stop
+rm: stop
+	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) rm

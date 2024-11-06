@@ -6,4 +6,4 @@ RUN apt install mariadb-server -y
 
 EXPOSE 3306
 
-ENTRYPOINT ["mysqld"]
+ENTRYPOINT ["mysqld_safe"]

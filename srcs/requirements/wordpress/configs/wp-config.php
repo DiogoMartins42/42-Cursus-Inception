@@ -20,16 +20,16 @@
 20	
 21	// ** Database settings - You can get this info from your web host ** //
 22	/** The name of the database for WordPress */
-23	define( 'DB_NAME', 'database_name_here' );
+23	define( 'DB_NAME', getenv('MYSQL_DATABASE') );
 24	
 25	/** Database username */
-26	define( 'DB_USER', 'username_here' );
+26	define( 'DB_USER', getenv('MYSQL_USER') );
 27	
 28	/** Database password */
-29	define( 'DB_PASSWORD', 'password_here' );
+29	define( 'DB_PASSWORD', getenv('MYSQL_PASS') );
 30	
 31	/** Database hostname */
-32	define( 'DB_HOST', 'localhost' );
+32	define( 'DB_HOST', getenv('MYSQL_HOST') );
 33	
 34	/** Database charset to use in creating database tables. */
 35	define( 'DB_CHARSET', 'utf8' );

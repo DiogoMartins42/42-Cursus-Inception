@@ -1,45 +1,59 @@
 
 
 services:
-    nginx:
-      build: requirements/nginx
-      container_name: nginx
-      ports: 
-        - "443:443"
-      depends_on: 
-        - wordpress
-      networks: 
-        - inception
-      restart: always
-      env_file: ../secrets/variables.env
-      volumes: 
-        - /home/dmanuel-/data/wordpress:/var/www/html
+  nginx:
+    build: requirements/nginx
+    container_name: nginx
+    ports: 
+      - "443:443"
+    depends_on: 
+      - wordpress
+    networks: 
+      - inception
+    restart: on-failure
+    env_file: ../secrets/variables.env
+    volumes: 
+      - /home/dmanuel-/data/wordpress:/var/www/html
     
-    mariadb:
-      build: requirements/mariadb
-      container_name: mariadb
-      expose: 
-        - 3306
-      networks: 
-        - inception
-      restart: always
-      env_file: ../secrets/variables.env
-      volumes: 
-        - /home/dmanuel-/data/mariadb:/var/lib/mysql
-    
-    wordpress:
-      build: requirements/wordpress
-      container_name: wordpress
-      expose: 
-        - 9000
-      depends_on: 
-        - mariadb
-      networks: 
-        - inception
-      restart: always
-      env_file: ../secrets/variables.env
-      volumes: 
-        - /home/dmanuel-/data/wordpress:/var/www/html
+  mariadb:
+    build: requirements/mariadb
+    container_name: mariadb
+    expose: 
+      - 3306
+    networks: 
+      - inception
+    restart: on-failure
+    env_file: ../secrets/variables.env
+    volumes: 
+      - /home/dmanuel-/data/mariadb:/var/lib/mysql
+
+  wordpress:
+    build: requirements/wordpress
+    container_name: wordpress
+    expose: 
+      - 9000
+    depends_on: 
+      - mariadb
+    networks: 
+      - inception
+    restart: on-failure
+    env_file: ../secrets/variables.env
+    volumes: 
+      - /home/dmanuel-/data/wordpress:/var/www/html
+
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/dmanuel-/data/wordpress'
+  mariadb:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/dmanuel-/data/mariadb'
 
 
 networks:

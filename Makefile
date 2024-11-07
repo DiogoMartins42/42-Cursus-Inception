@@ -4,6 +4,8 @@ NAME=inception
 all: build up
 
 build:
+	sudo mkdir -p /home/dmanuel-/data/{wordpress,mariadb}
+	sudo chown -R 1000:1000 /home/dmanuel-/data/{wordpress,mariadb}
 	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) build
 up: 
 	sudo docker compose -f $(COMPOSE_SRSC) -p $(NAME) up -d

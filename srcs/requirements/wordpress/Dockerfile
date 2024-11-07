@@ -2,19 +2,23 @@ FROM debian:bullseye
 
 RUN apt update
 RUN apt upgrade -y
-RUN apt install wget -y
-RUN apt install php7.4 -y
-RUN apt install php-fpm -y
-RUN apt install php-mysql -y
-RUN apt install mariadb-client -y
-
-RUN php -v || php-fpm -v
-RUN mkdir -p /var/www/html && chown -R www-data:www-data /var/www/html
+RUN apt install wget -y \
+php7.4 \
+php-fpm \
+php-mysql \
+mariadb-client
 
 RUN wget https://wordpress.org/wordpress-6.3.1.tar.gz -P /var/www
 RUN cd /var/www && tar -xzf wordpress-6.3.1.tar.gz && rm wordpress-6.3.1.tar.gz
 COPY ./configs/wp-config.php /var/www/html/
+RUN	chown -R root:root /var/www/wordpress
+
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar
+RUN mv wp-cli.phar /usr/local/bin/wp
+
+COPY ./start/auto_setup.sh /tmp/
 
 EXPOSE 9000
 
-ENTRYPOINT [ "/usr/sbin/php-fpm7.4" "-F" ]
+ENTRYPOINT [ "sh", "/tmp/auto_setup.sh" ]

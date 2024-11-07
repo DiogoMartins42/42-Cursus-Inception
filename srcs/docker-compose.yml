@@ -41,6 +41,20 @@ services:
     volumes: 
       - /home/dmanuel-/data/wordpress:/var/www/html
 
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/dmanuel-/data/wordpress'
+  mariadb:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/dmanuel-/data/mariadb'
+
 
 networks:
   inception:

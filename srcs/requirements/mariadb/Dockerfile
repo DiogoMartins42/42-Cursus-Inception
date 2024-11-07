@@ -4,6 +4,9 @@ RUN apt update
 
 RUN apt install mariadb-server -y
 
+COPY conf/50-server.cnf	/etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./start/mysql_setup.sh /tmp/mysql_setup.sh
+
 EXPOSE 3306
 
-ENTRYPOINT ["mysqld_safe"]
+ENTRYPOINT ["sh" , "/tmp/mysql_setup.sh"]

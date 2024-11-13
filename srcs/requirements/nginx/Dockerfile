@@ -3,15 +3,17 @@ FROM debian:bullseye
 RUN apt update
 RUN apt install -y nginx
 
-ARG NGINX_CSR
-ARG NGINX_KEY
+ENV NGINX_CSR=/etc/nginx/ssl/certificate.crt
+ENV NGINX_KEY=/etc/nginx/ssl/private.key
 
+RUN mkdir -p /etc/nginx/ssl
 RUN apt install -y openssl 
 RUN openssl req -new -x509 -newkey rsa:2048 -nodes \
         -out ${NGINX_CSR} \
         -keyout ${NGINX_KEY} \
         -subj "/C=PT/ST=Porto/L=Porto/O=Diogo Martins/OU=42 Porto/CN=www.dmanuel-.42.fr"
 
+RUN ls -l /etc/nginx/ssl
 RUN mkdir -p /var/run/nginx
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 

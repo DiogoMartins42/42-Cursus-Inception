@@ -11,7 +11,7 @@ services:
     restart: on-failure
     env_file: ../secrets/variables.env
     volumes: 
-      - /home/dmanuel-/data/wordpress:/var/www/html
+      - wordpress:/var/www/html
       - ../secrets:/secrets
     
   mariadb:
@@ -24,7 +24,7 @@ services:
     restart: on-failure
     env_file: ../secrets/variables.env
     volumes: 
-      - /home/dmanuel-/data/mariadb:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     healthcheck:
       test: mysqladmin ping -h localhost -uroot -p${MYSQL_ROOT_PASSWORD}
       interval: 5s
@@ -44,7 +44,7 @@ services:
     restart: on-failure
     env_file: ../secrets/variables.env
     volumes: 
-      - /home/dmanuel-/data/wordpress:/var/www/html
+      - wordpress:/var/www/html
 volumes:
   wordpress:
     driver: local

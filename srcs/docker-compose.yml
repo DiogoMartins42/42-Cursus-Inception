@@ -1,0 +1,68 @@
+services:
+  
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    expose: 
+      - "3306"
+    networks: 
+      - inception
+    restart: on-failure
+    env_file: .env
+    volumes: 
+      - database:/var/lib/mysql
+      
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    expose: 
+      - "9000"
+    depends_on: 
+      - mariadb
+    networks: 
+      - inception
+    restart: on-failure
+    env_file: .env
+    volumes: 
+      - wordpress_files:/var/www/inception
+
+  nginx:
+    build: 
+      context: ./requirements/nginx/
+      args:
+        CERT_FOLDER: ${CERT_FOLDER}
+        CERTIFICATE: ${CERTIFICATE}
+        KEY: ${KEY}
+        COUNTRY: ${COUNTRY}
+        STATE: ${STATE}
+        LOCALITY: ${LOCALITY}
+        ORGANIZATION: ${ORGANIZATION}
+        UNIT: ${UNIT}
+        COMMON_NAME: ${COMMON_NAME}
+    container_name: nginx
+    ports: 
+      - "443:443"
+    depends_on: 
+      - wordpress
+    networks: 
+      - inception
+    restart: on-failure
+    env_file: .env
+    volumes: 
+      - wordpress_files:/var/www/inception
+volumes:
+  wordpress_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/vboxuser/data/wordpress_files"
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/vboxuser/data/database"
+networks:
+  inception:
+    driver: bridge
